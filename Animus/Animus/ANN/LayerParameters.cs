@@ -14,7 +14,7 @@ namespace Animus.ANN
 
         public Vector Bias { get; }
 
-        #region differentiate
+        #region differential
 
         public LayerParameters Primal => new LayerParameters(Weights.Primal, Bias.Primal);
 
@@ -32,7 +32,7 @@ namespace Animus.ANN
             throw new System.NotImplementedException();
         }
 
-        #endregion differentiate
+        #endregion differential
 
         #region lp - lp
 

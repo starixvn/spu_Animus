@@ -19,6 +19,14 @@ namespace Animus.Tensor
 
         public int Length => Rows * Columns;
 
+        public Scalar Determinant => new Scalar(DM.Det(matrix));
+
+        public Scalar Trace => new Scalar(DM.Trace(matrix));
+
+        public Vector Diagonal => new Vector(DM.Diagonal(matrix));
+
+        public Matrix Transpose => new Matrix(DM.Transpose(matrix));
+
         public Vector Slice(int i, int? j1, int? j2)
         {
             var s = j1.HasValue ? j1.Value : 0;

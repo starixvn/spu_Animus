@@ -14,6 +14,10 @@ namespace Animus.Tensor
 
         public int Length => vector.Length;
 
+        public int MaxIndex => DV.MaxIndex(vector);
+
+        public int MinIndex => DV.MinIndex(vector);
+
         public Vector Slice(int? start, int? end)
         {
             var s = start.HasValue ? start.Value : 0;
@@ -24,17 +28,19 @@ namespace Animus.Tensor
             return new Vector(result);
         }
 
-        public Vector Pow(Scalar a) => new Vector(DV.Pow(vector, a.scalar));
-
-        public Vector Pow(Vector a) => new Vector(DV.Pow(vector, a.vector));
-
-        public int MaxIndex => DV.MaxIndex(vector);
-
-        public int MinIndex => DV.MinIndex(vector);
+        public Vector Append(Vector v) => new Vector(DV.Append(vector, v.vector));
 
         public override string ToString() => string.Join(",", (double[])vector);
 
         public static Vector Zero { get; } = new Vector(DV.Zero);
+
+        #region instance operator
+
+        public Vector Pow(Scalar a) => new Vector(DV.Pow(vector, a.scalar));
+
+        public Vector Pow(Vector a) => new Vector(DV.Pow(vector, a.vector));
+
+        #endregion instance operator
 
         #region differential
 
