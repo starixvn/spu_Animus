@@ -61,6 +61,7 @@
     <Compile Include="ANN\LayerParameters.cs" />
     <Compile Include="FunctionExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rng.cs" />
     <Compile Include="TaskExtension.cs" />
     <Compile Include="IDifferentiable.cs" />
     <Compile Include="Tensor\Matrix.cs" />
