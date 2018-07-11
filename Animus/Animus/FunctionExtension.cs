@@ -15,7 +15,7 @@ namespace Animus
             // calculate + release graph as it moves forward
             var result = f(forward);
 
-            return (result.Primal, result.Tagent.Primal);
+            return (result.Primal, result.Tangent.Primal);
         }
 
         public static (Scalar functionValue, T gradient) Gradient<T>(this Func<T, Scalar> f, T x) where T : IDifferentiable<T>

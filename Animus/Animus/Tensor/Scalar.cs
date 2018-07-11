@@ -26,7 +26,7 @@ namespace Animus.Tensor
 
         public Scalar Primal => new Scalar(scalar.P);
 
-        public Scalar Tagent => new Scalar(scalar.T);
+        public Scalar Tangent => new Scalar(scalar.T);
 
         public Scalar Adjoint => new Scalar(scalar.A);
 

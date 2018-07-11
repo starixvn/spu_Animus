@@ -67,7 +67,7 @@ namespace Animus.Tensor
 
         public Matrix Primal => new Matrix(matrix.P);
 
-        public Matrix Tagent => new Matrix(matrix.T);
+        public Matrix Tangent => new Matrix(matrix.T);
 
         public Matrix Adjoint => new Matrix(matrix.A);
 

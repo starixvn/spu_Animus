@@ -4,7 +4,7 @@
     {
         T Primal { get; }
 
-        T Tagent { get; }
+        T Tangent { get; }
 
         T Adjoint { get; }
 

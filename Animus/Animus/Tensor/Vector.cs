@@ -40,7 +40,7 @@ namespace Animus.Tensor
 
         public Vector Primal => new Vector(vector.P);
 
-        public Vector Tagent => new Vector(vector.T);
+        public Vector Tangent => new Vector(vector.T);
 
         public Vector Adjoint => new Vector(vector.A);
 
