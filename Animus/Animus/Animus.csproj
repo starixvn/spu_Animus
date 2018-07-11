@@ -63,8 +63,11 @@
     <Compile Include="TaskExtension.cs" />
     <Compile Include="IDifferentiable.cs" />
     <Compile Include="Tensor\Matrix.cs" />
+    <Compile Include="Tensor\MatrixFunction.cs" />
     <Compile Include="Tensor\Scalar.cs" />
+    <Compile Include="Tensor\ScalarFunction.cs" />
     <Compile Include="Tensor\Vector.cs" />
+    <Compile Include="Tensor\VectorFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

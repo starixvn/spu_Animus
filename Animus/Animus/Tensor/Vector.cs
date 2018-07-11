@@ -28,6 +28,10 @@ namespace Animus.Tensor
 
         public Vector Pow(Vector a) => new Vector(DV.Pow(vector, a.vector));
 
+        public int MaxIndex => DV.MaxIndex(vector);
+
+        public int MinIndex => DV.MinIndex(vector);
+
         public override string ToString() => string.Join(",", (double[])vector);
 
         public static Vector Zero { get; } = new Vector(DV.Zero);

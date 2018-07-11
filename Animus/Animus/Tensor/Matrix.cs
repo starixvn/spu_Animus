@@ -51,10 +51,7 @@ namespace Animus.Tensor
                 ));
         }
 
-        public override string ToString()
-        {
-            return matrix.ToString().Replace("DM", "");
-        }
+        public override string ToString() => matrix.ToString().Replace("DM : ", "");
 
         public static Matrix Zero { get; } = new Matrix(DM.Zero);
 

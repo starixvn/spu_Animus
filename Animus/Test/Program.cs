@@ -8,11 +8,13 @@ namespace Test
     {
         private static void Main(string[] args)
         {
-            var a = new Scalar(5);
+            var a = new Matrix(new double[,] 
+            {
+                { 1, -2},
+                { -2, 1}
+            });
 
-            Func<Scalar, Scalar> f = x => x + 4;
-
-            Console.WriteLine(f.Derivative(0).derivative);
+            Console.WriteLine(a + 5);
 
             Console.ReadLine();
         }

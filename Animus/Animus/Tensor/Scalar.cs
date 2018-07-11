@@ -16,6 +16,12 @@ namespace Animus.Tensor
 
         public static Scalar One { get; } = new Scalar(1);
 
+        #region instance operator
+
+        public Scalar Pow(Scalar s) => new Scalar(D.Pow(scalar, s.scalar));
+
+        #endregion instance operator
+
         #region differential
 
         public Scalar Primal => new Scalar(scalar.P);
