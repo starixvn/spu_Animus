@@ -18,6 +18,8 @@ namespace Animus
 
         public static Categorical Category(params double[] probabilities) => new Categorical(probabilities, Source);
 
+        public static Bernoulli Bernoulli(double p) => new Bernoulli(p, Source);
+
         public static IEnumerable<T> SelectNoRepeat<T>(this IEnumerable<T> data, int n) => Combinatorics.SelectVariation(data, n, Source);
 
         public static IEnumerable<T> SelectWithRepeat<T>(this IEnumerable<T> data, int n) => Combinatorics.SelectVariationWithRepetition(data, n, Source);

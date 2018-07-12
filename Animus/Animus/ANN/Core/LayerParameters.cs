@@ -1,6 +1,7 @@
 ﻿using Animus.Tensor;
+using System.Collections.Generic;
 
-namespace Animus.ANN
+namespace Animus.ANN.Core
 {
     public class LayerParameters : IDifferentiable<LayerParameters>
     {
@@ -13,6 +14,14 @@ namespace Animus.ANN
         public Matrix Weights { get; }
 
         public Vector Bias { get; }
+
+        public static IEnumerable<LayerParameters> Zero(int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                yield return new LayerParameters(Matrix.Zero, Vector.Zero);
+            }
+        }
 
         #region differential
 

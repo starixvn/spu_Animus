@@ -40,6 +40,10 @@ namespace Animus.Tensor
 
         public Vector Pow(Vector a) => new Vector(DV.Pow(vector, a.vector));
 
+        public Matrix Cross(Vector v) => new Matrix(DV.op_AmpMultiply(vector, v.vector));
+
+        public Vector Hadamard(Vector v) => new Vector(DV.op_DotMultiply(vector, v.vector));
+
         #endregion instance operator
 
         #region differential

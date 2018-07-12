@@ -1,4 +1,5 @@
-﻿using Microsoft.FSharp.Core;
+﻿using MathNet.Numerics.LinearAlgebra;
+using Microsoft.FSharp.Core;
 using static DiffSharp.AD.Float64;
 
 namespace Animus.Tensor
@@ -26,6 +27,8 @@ namespace Animus.Tensor
         public Vector Diagonal => new Vector(DM.Diagonal(matrix));
 
         public Matrix Transpose => new Matrix(DM.Transpose(matrix));
+
+        public Matrix Inverse => new Matrix(DM.Inverse(matrix));
 
         public Vector Slice(int i, int? j1, int? j2)
         {
@@ -57,6 +60,15 @@ namespace Animus.Tensor
                     new FSharpOption<int>(s2),
                     new FSharpOption<int>(e2)
                 ));
+        }
+
+        public (Matrix eigenValues, Matrix eigenVectors) Eigen()
+        {
+            var m = CreateMatrix.DenseOfArray((double[,])matrix);
+
+            var evd = m.Evd();
+
+            return (new Matrix(evd.D.ToArray()), new Matrix(evd.EigenVectors.ToArray()));
         }
 
         public override string ToString() => matrix.ToString().Replace("DM : ", "");
