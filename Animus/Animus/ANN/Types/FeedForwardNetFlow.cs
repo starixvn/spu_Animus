@@ -23,7 +23,7 @@ namespace Animus.ANN.Types
             outputLayer = network.OutputLayer.BuildFlow(network.Layers - 1);
         }
 
-        public Vector Model(LayerParameters[] parameters, TInput input)
+        public Vector Model(LayerParameterList parameters, TInput input)
         {
             var result = inputLayer.Model(input);
 
@@ -35,7 +35,7 @@ namespace Animus.ANN.Types
             return outputLayer.Model(parameters, result);
         }
 
-        public Vector Train(LayerParameters[] parameters, TInput input)
+        public Vector Train(LayerParameterList parameters, TInput input)
         {
             var result = inputLayer.Train(input);
 

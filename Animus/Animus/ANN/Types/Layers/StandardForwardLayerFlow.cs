@@ -16,8 +16,8 @@ namespace Animus.ANN.Types.Layers
             this.activator = activator;
         }
 
-        public Vector Model(LayerParameters[] parameters, Vector input) => activator(parameters[offset].Linear(input));
+        public Vector Model(LayerParameterList parameters, Vector input) => activator(parameters[offset].Linear(input));
 
-        public Vector Train(LayerParameters[] parameters, Vector input) => activator(parameters[offset].Linear(input));
+        public Vector Train(LayerParameterList parameters, Vector input) => activator(parameters[offset].Linear(input));
     }
 }

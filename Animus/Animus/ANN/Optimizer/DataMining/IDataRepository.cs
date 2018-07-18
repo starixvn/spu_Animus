@@ -11,6 +11,6 @@ namespace Animus.ANN.Optimizer.DataMining
     {
         IEnumerable<TInput> Sample();
 
-        Scalar Loss(TInput sample, TOutput);
+        Scalar Loss(TInput sample, TOutput output);
     }
 }

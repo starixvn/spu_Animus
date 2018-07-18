@@ -15,7 +15,13 @@ namespace Animus.ANN.Core
 
         public Vector Bias { get; }
 
+        public LayerParameters Pow(Scalar n) => new LayerParameters(Weights.Pow(n), Bias.Pow(n));
+
+        public LayerParameters Hadamard(LayerParameters p) => new LayerParameters(Weights, Bias.Hadamard(p.Bias));
+
         public static LayerParameters Zero => new LayerParameters(Matrix.Zero, Vector.Zero);
+
+        public static LayerParameters Sqrt(LayerParameters w) => new LayerParameters(TensorFunction.Sqrt(w.Weights), TensorFunction.Sqrt(w.Bias));
 
         public static IEnumerable<LayerParameters> Zeroes(int n)
         {
@@ -51,9 +57,15 @@ namespace Animus.ANN.Core
 
         public static LayerParameters operator -(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights - w2.Weights, w1.Bias - w1.Bias);
 
+        public static LayerParameters operator *(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights.Hadamard(w2.Weights), w1.Bias.Hadamard(w2.Bias));
+
+        public static LayerParameters operator /(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights.Hadamard(1 / w2.Weights), w1.Bias.Hadamard(1 / w2.Bias));
+
         #endregion lp - lp
 
         #region s - lp
+
+        public static LayerParameters operator +(Scalar s, LayerParameters w) => new LayerParameters(s + w.Weights, s + w.Bias);
 
         public static LayerParameters operator *(Scalar s, LayerParameters w) => new LayerParameters(s * w.Weights, s * w.Bias);
 

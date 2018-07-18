@@ -6,6 +6,6 @@ namespace Animus.ANN.Optimizer.DataMining
 {
     public interface IOptimizer
     {
-        Task<LayerParameterList> Train<TInput, TOuput>(IDataRepository<TInput, TOuput> repository, Func<LayerParameterList, TInput, TOuput> objective, LayerParameterList initial);
+        Task<LayerParameterList> TrainAsync<TInput, TOutput>(IDataRepository<TInput, TOutput> repository, Func<LayerParameterList, TInput, TOutput> objective, LayerParameterList initial);
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Animus.ANN.Core
 {
+    //TODO: implement the rest
     public class LayerParameterList : IDifferentiable<LayerParameterList>, IReadOnlyList<LayerParameters>
     {
         private readonly LayerParameters[] parameters;

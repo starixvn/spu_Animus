@@ -18,7 +18,7 @@ namespace Animus.ANN.Types.Layers
             this.modifier = modifier;
         }
 
-        public Vector Model(LayerParameters[] parameters, Vector input)
+        public Vector Model(LayerParameterList parameters, Vector input)
         {
             var sum = parameters[offset].Linear(input);
 
@@ -29,7 +29,7 @@ namespace Animus.ANN.Types.Layers
             return modded;
         }
 
-        public Vector Train(LayerParameters[] parameters, Vector input)
+        public Vector Train(LayerParameterList parameters, Vector input)
         {
             var sum = parameters[offset].Linear(input);
 

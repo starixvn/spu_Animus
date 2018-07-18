@@ -81,6 +81,8 @@ namespace Animus.Tensor
 
         public Matrix Pow(Matrix m) => new Matrix(DM.Pow(this.matrix, m.matrix));
 
+        public Matrix Hadamard(Matrix m) => new Matrix(DM.op_DotMultiply(matrix, m.matrix));
+
         #endregion instance operator
 
         #region differential

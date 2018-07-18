@@ -27,14 +27,14 @@ namespace Animus.ANN.Types
             rebuilder = encoder.Decoder.BuildFlow(encoder.Encoders.Count());
         }
 
-        public Vector Model(LayerParameters[] parameters, Vector input)
+        public Vector Model(LayerParameterList parameters, Vector input)
         {
             var encoded = encoders.Aggregate(input, (acc, layer) => layer.Model(parameters, acc));
 
             return normalizer.Model(parameters, encoded);
         }
 
-        public Vector Train(LayerParameters[] parameters, Vector input)
+        public Vector Train(LayerParameterList parameters, Vector input)
         {
             var encoded = encoders.Aggregate(input, (acc, layer) => layer.Train(parameters, acc));
 
@@ -47,7 +47,7 @@ namespace Animus.ANN.Types
             throw new NotImplementedException();
         }
 
-        private LayerParameters[] CreateTightWeightsDecoded(LayerParameters[] fullParameters)
+        private LayerParameters[] CreateTightWeightsDecoded(LayerParameterList fullParameters)
         {
             var q = new Queue<LayerParameters>();
 

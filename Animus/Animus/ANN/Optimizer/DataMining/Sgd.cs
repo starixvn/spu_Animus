@@ -14,14 +14,23 @@ namespace Animus.ANN.Optimizer.DataMining
 
         protected LayerParameters[] AccumulatedDirection { get; private set; }
 
-        public async Task<LayerParameterList> Train<TInput, TOutput>(IDataRepository<TInput, TOutput> repository, Func<LayerParameterList, TInput, TOutput> objective, LayerParameterList initial)
+        protected abstract double LearningRate(int epoch);
+
+        protected abstract double Momentum(int epoch);
+
+        protected abstract bool StopTraining(int epoch, double loss);
+
+        protected virtual void Callback(int epoch, double loss) => Console.WriteLine($"{epoch} - {loss}");
+
+        public async Task<LayerParameterList> TrainAsync<TInput, TOutput>(IDataRepository<TInput, TOutput> repository, Func<LayerParameterList, TInput, TOutput> objective, LayerParameterList initial)
         {
-            Func<LayerParameterList, Task<Scalar>> f = p => CalculateBatch(p, repository, objective);
+            Func<LayerParameterList, Task<Scalar>> f = p => Helper.CalculateBatch(p, repository, objective);
 
             CurrentParameters = initial;
             AccumulatedDirection = LayerParameters.Zeroes(initial.Count).ToArray();
 
             var epoch = 0;
+            var loss = double.PositiveInfinity;
 
             do
             {
@@ -29,38 +38,24 @@ namespace Animus.ANN.Optimizer.DataMining
                 var momentum = Momentum(epoch);
 
                 var (functionValue, gradient) = await f.Gradient(CurrentParameters);
+
+                loss = (double)functionValue;
+
                 //update step value
                 AccumulatedDirection = AccumulatedDirection.Select((dir, idx) => momentum * dir - learningRate * gradient[idx]).ToArray();
 
                 //update parameters according to step
                 CurrentParameters = new LayerParameterList(CurrentParameters.Select((p, i) => p + AccumulatedDirection[i]));
 
+                //replicate so that each callback is independent
+                var callbackEpoch = ++epoch;
+                var callbackLoss = loss;
+
                 // no need to wait for call back
-                Task.Factory.StartNew((e) => Callback((int)e, functionValue), ++epoch);
-            } while (!StopTraining(epoch));
+                Task.Factory.StartNew(() => Callback(callbackEpoch, callbackLoss));
+            } while (!StopTraining(epoch, loss));
 
             return CurrentParameters;
-        }
-
-        protected abstract double LearningRate(int epoch);
-
-        protected abstract double Momentum(int epoch);
-
-        protected abstract bool StopTraining(int epoch);
-
-        protected virtual void Callback(int epoch, Scalar loss)
-        {
-        }
-
-        private Task<Scalar> CalculateBatch<TInput, TOutput>(LayerParameterList parameters, IDataRepository<TInput, TOutput> repository, Func<LayerParameterList, TInput, TOutput> objective)
-        {
-            var data = repository.Sample().ToArray();
-
-            return Task.Factory.StartNew(() => data
-                    .AsParallel()
-                    .AsUnordered()
-                    .Select(d => repository.Loss(d, objective(parameters, d)))
-                    .Aggregate(Scalar.Zero, (subtotal, loss) => subtotal + loss, (total, subtotal) => total + subtotal, total => total / data.Length));
         }
     }
 }
