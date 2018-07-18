@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animus", "Animus\Animus.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2F24A896-94DD-421E-A80F-9D3046B47F70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimusUnitTest", "AnimusUnitTest\AnimusUnitTest.csproj", "{D5C02A44-D98B-43F0-BC23-A22C10BCD902}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2F24A896-94DD-421E-A80F-9D3046B47F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F24A896-94DD-421E-A80F-9D3046B47F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F24A896-94DD-421E-A80F-9D3046B47F70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C02A44-D98B-43F0-BC23-A22C10BCD902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C02A44-D98B-43F0-BC23-A22C10BCD902}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C02A44-D98B-43F0-BC23-A22C10BCD902}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C02A44-D98B-43F0-BC23-A22C10BCD902}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

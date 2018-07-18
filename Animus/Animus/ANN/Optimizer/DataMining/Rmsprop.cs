@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Animus.ANN.Optimizer.DataMining
 {
+    //TODO: test
     public abstract class Rmsprop : IOptimizer
     {
         protected LayerParameterList CurrentParameters { get; private set; }
