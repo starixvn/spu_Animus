@@ -18,8 +18,6 @@ namespace Animus
 
         public static async Task<IEnumerable<T>> Collect<T>(this IEnumerable<Task<T>> tasks)
         {
-            var arr = tasks.ToArray();
-
             await Task.WhenAll(tasks);
 
             return tasks.Select(t => t.Result);

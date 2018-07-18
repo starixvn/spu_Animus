@@ -15,7 +15,9 @@ namespace Animus.ANN.Core
 
         public Vector Bias { get; }
 
-        public static IEnumerable<LayerParameters> Zero(int n)
+        public static LayerParameters Zero => new LayerParameters(Matrix.Zero, Vector.Zero);
+
+        public static IEnumerable<LayerParameters> Zeroes(int n)
         {
             for (int i = 0; i < n; i++)
             {

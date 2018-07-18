@@ -5,5 +5,7 @@ namespace Animus.ANN.Core
     public static class Filter
     {
         public static Vector Linear(this LayerParameters layer, Vector input) => layer.Weights * input + layer.Bias;
+
+        public static Vector TransposeLinear(this LayerParameters layer, Vector input) => input * layer.Weights + layer.Bias;
     }
 }
