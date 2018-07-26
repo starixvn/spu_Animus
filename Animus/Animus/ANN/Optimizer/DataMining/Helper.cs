@@ -16,7 +16,7 @@ namespace Animus.ANN.Optimizer.DataMining
                     .AsParallel()
                     .AsUnordered()
                     .Select(d => repository.Loss(d, objective(parameters, d)))
-                    .Aggregate(Scalar.Zero, (subtotal, loss) => subtotal + loss, (total, subtotal) => total + subtotal, total => total / data.Length));
+                    .Aggregate(Scalar.Zero, (_, loss) => loss, (total, subtotal) => total + subtotal, total => total / data.Length));
         }
     }
 }

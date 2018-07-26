@@ -36,7 +36,7 @@ namespace Animus.Tensor
 
         public static Vector Zero { get; } = new Vector(DV.Zero);
 
-        public static Vector OfArray(IEnumerable<Scalar> scalars) => new Vector(DV.OfArray(scalars.Select(s => s.scalar).ToArray()));
+        public static Vector OfSequence(IEnumerable<Scalar> scalars) => new Vector(DV.OfArray(scalars.Select(s => s.scalar).ToArray()));
 
         #region instance operator
 

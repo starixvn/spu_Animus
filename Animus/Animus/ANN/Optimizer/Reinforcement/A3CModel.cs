@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Animus.ANN.Optimizer.Reinforcement
 {
-    public class A3CModel<TState, TAction> : IModel<TState, IEnumerable<(TAction action, double score)>>
+    public class A3CModel<TState, TAction> : IModel<TState, IEnumerable<ActionScore<TAction>>>
     {
         private readonly LayerParameterList parameters;
         private readonly IDataFlow<TState, Vector> flow;
@@ -23,7 +23,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
         public LayerParameters[] Parameters { get; }
 
-        public IEnumerable<(TAction action, double score)> Compute(TState input)
+        public IEnumerable<ActionScore<TAction>> Compute(TState input)
         {
             var valuePolicy = flow.Model(parameters, input);
 
@@ -32,11 +32,15 @@ namespace Animus.ANN.Optimizer.Reinforcement
             var policy = actions
                 .Select(a => valuePolicy[a3C.ActionIndex(a) + 1]);
 
-            var normalizedPolicy = TensorFunction.Softmax(Vector.OfArray(policy.ToArray()));
+            var normalizedPolicy = TensorFunction.Softmax(Vector.OfSequence(policy.ToArray()));
 
             foreach (var action in actions)
             {
-                yield return (action, (double)normalizedPolicy[a3C.ActionIndex(action) + 1]);
+                yield return new ActionScore<TAction>
+                {
+                    Action = action,
+                    Score = (double)normalizedPolicy[a3C.ActionIndex(action) + 1]
+                };
             }
         }
     }

@@ -12,10 +12,10 @@ namespace Animus.ANN.Types.Layers
 
         public static IFeedForwardLayer MakeTanhLayer(int n) => new StandardLayer(TensorFunction.Tanh, n, (prev, curr) => Initializer.XavierGaussian(1, prev, curr));
 
-        public static IFeedForwardLayer MakeSigmoidLayer(int n) => new StandardLayer(TensorFunction.Sigmoid, n, (prev, curr) => Initializer.SigmoidGaussian(prev, curr));
+        public static IFeedForwardLayer MakeSigmoidLayer(int n) => new StandardLayer(TensorFunction.Sigmoid, n, Initializer.SigmoidGaussian);
 
         public static IFeedForwardLayer MakeSoftmaxLayer(int n) => new StandardLayer(TensorFunction.Softmax, n, (prev, curr) => Initializer.XavierUniform(1, prev, curr));
 
-        public static IFeedForwardLayer MakeReLuLayer(int n) => new StandardLayer(TensorFunction.ReLU, n, (prev, curr) => Initializer.ReLuGaussian(prev, curr));
+        public static IFeedForwardLayer MakeReLuLayer(int n) => new StandardLayer(TensorFunction.ReLU, n, Initializer.ReLuGaussian);
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Animus.ANN.Optimizer.Reinforcement
 {
-    public interface IPolicyOptimizer<TState, TAction, TAgent, TModel>
+    public interface IPolicyOptimizer<TState, TAction, TAgent>
     {
         double Discount { get; }
 
@@ -14,7 +15,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
         void ThreadCallback(int thread, int game, double point);
 
-        Task<TModel> Train(IEnvironment<TState, TAction> environment, TAgent agent);
+        Task<IModel<TState, IEnumerable<ActionScore<TAction>>>> Train(IEnvironment<TState, TAction> environment, TAgent agent);
 
         bool Terminate(int thread, int game);
     }

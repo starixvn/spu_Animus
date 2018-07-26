@@ -13,7 +13,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
     /// </summary>
     /// <typeparam name="TState"></typeparam>
     /// <typeparam name="TAction"></typeparam>
-    public abstract class A3C<TState, TAction> : IPolicyOptimizer<TState, TAction, INN<TState, Vector>, IModel<TState, IEnumerable<(TAction action, double score)>>>
+    public abstract class A3C<TState, TAction> : IPolicyOptimizer<TState, TAction, INN<TState, Vector>>
     {
         protected virtual double Beta => 0.01;
 
@@ -44,7 +44,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
         private IAsyncOptimizer optimizer;
 
-        public async Task<IModel<TState, IEnumerable<(TAction action, double score)>>> Train(IEnvironment<TState, TAction> environment, INN<TState, Vector> agent)
+        public async Task<IModel<TState, IEnumerable<ActionScore<TAction>>>> Train(IEnvironment<TState, TAction> environment, INN<TState, Vector> agent)
         {
             //intialize thread share objects
             parameters = new LayerParameterList(agent.Initialize());
@@ -77,12 +77,16 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
             while (!Terminate(thread, game))
             {
+                //sync thread to global
                 var threadParameter = parameters;
 
+                //play the game
                 var (finalState, records) = Play(threadParameter, game, turn, state);
 
+                //calculate reward
                 var newReward = ProcessData(threadParameter, finalState, records);
 
+                //update global
                 Learn(game, turn, threadParameter, records);
 
                 state = finalState;
@@ -110,12 +114,10 @@ namespace Animus.ANN.Optimizer.Reinforcement
         {
             var valuePolicy = calculator.Train(parameters, state);
 
-            var actions = environment.GetActions(state);
-
             var policy = environment.GetActions(state)
                 .Select(a => valuePolicy[ActionIndex(a) + 1]);
 
-            var normalizedPolicy = TensorFunction.Softmax(Vector.OfArray(policy.ToArray()));
+            var normalizedPolicy = TensorFunction.Softmax(Vector.OfSequence(policy.ToArray()));
 
             return (valuePolicy[0], normalizedPolicy);
         }
