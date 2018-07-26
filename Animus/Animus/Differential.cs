@@ -6,7 +6,7 @@ using static DiffSharp.Util;
 
 namespace Animus
 {
-    public static class FunctionExtension
+    public static class Differential
     {
         public static (Scalar functionValue, Scalar derivative) Derivative(this Func<Scalar, Scalar> f, Scalar x)
         {

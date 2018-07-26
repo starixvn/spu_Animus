@@ -78,8 +78,6 @@
     <Compile Include="ANN\Optimizer\Reinforcement\IEnvironment.cs" />
     <Compile Include="ANN\Optimizer\Reinforcement\IPolicyOptimizer.cs" />
     <Compile Include="ANN\Optimizer\Reinforcement\Record.cs" />
-    <Compile Include="ANN\Types\AutoEncoder.cs" />
-    <Compile Include="ANN\Types\EncoderFlow.cs" />
     <Compile Include="ANN\Types\FeedForwardNet.cs" />
     <Compile Include="ANN\Types\FeedForwardNetFlow.cs" />
     <Compile Include="ANN\Types\Layers\FeedForwardEncoderLayer.cs" />
@@ -99,7 +97,7 @@
     <Compile Include="ANN\Types\Modifiers\ModifierFactory.cs" />
     <Compile Include="ANN\Types\Modifiers\StandardCorrelationInputModifier.cs" />
     <Compile Include="ANN\Types\Modifiers\ZeroMeanModifier.cs" />
-    <Compile Include="FunctionExtension.cs" />
+    <Compile Include="Differential.cs" />
     <Compile Include="ANN\Optimizer\DataMining\IDataRepository.cs" />
     <Compile Include="ANN\Optimizer\DataMining\IOptimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -39,6 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=4.5.1.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -47,11 +48,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ANNTest\DataminingTest.cs" />
+    <Compile Include="TensorTest\MatrixTest.cs" />
     <Compile Include="TensorTest\ScalarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TensorTest\VectorTest.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="DifferentialTest.cs" />
+>>>>>>> testing
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -76,6 +84,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+<<<<<<< HEAD
+=======
+  <ItemGroup />
+>>>>>>> testing
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

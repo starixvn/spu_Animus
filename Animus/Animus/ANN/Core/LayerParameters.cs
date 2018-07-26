@@ -17,7 +17,7 @@ namespace Animus.ANN.Core
 
         public LayerParameters Pow(Scalar n) => new LayerParameters(Weights.Pow(n), Bias.Pow(n));
 
-        public LayerParameters Hadamard(LayerParameters p) => new LayerParameters(Weights, Bias.Hadamard(p.Bias));
+        public LayerParameters Hadamard(LayerParameters p) => new LayerParameters(Weights.Hadamard(p.Weights), Bias.Hadamard(p.Bias));
 
         public static LayerParameters Zero => new LayerParameters(Matrix.Zero, Vector.Zero);
 
@@ -39,15 +39,9 @@ namespace Animus.ANN.Core
 
         public LayerParameters Adjoint => new LayerParameters(Weights.Adjoint, Bias.Adjoint);
 
-        public LayerParameters Forward(LayerParameters tangent, uint lvl)
-        {
-            throw new System.NotImplementedException();
-        }
+        public LayerParameters Forward(LayerParameters tangent, uint lvl) => new LayerParameters(Weights.Forward(tangent.Weights, lvl), Bias.Forward(tangent.Bias, lvl));
 
-        public LayerParameters Reverse(uint lvl)
-        {
-            throw new System.NotImplementedException();
-        }
+        public LayerParameters Reverse(uint lvl) => new LayerParameters(Weights.Reverse(lvl), Bias.Reverse(lvl));
 
         #endregion differential
 
