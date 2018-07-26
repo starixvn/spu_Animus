@@ -1,4 +1,6 @@
-﻿using static DiffSharp.AD.Float64;
+﻿using System.Collections.Generic;
+using System.Linq;
+using static DiffSharp.AD.Float64;
 
 namespace Animus.Tensor
 {
@@ -33,6 +35,8 @@ namespace Animus.Tensor
         public override string ToString() => string.Join(",", (double[])vector);
 
         public static Vector Zero { get; } = new Vector(DV.Zero);
+
+        public static Vector OfArray(IEnumerable<Scalar> scalars) => new Vector(DV.OfArray(scalars.Select(s => s.scalar).ToArray()));
 
         #region instance operator
 

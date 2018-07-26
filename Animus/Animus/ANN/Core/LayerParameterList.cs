@@ -34,6 +34,8 @@ namespace Animus.ANN.Core
 
         public int Count { get; }
 
+        public LayerParameters[] Raw => parameters;
+
         public LayerParameterList Primal => new LayerParameterList(parameters.Select(lp => lp.Primal));
 
         public LayerParameterList Tangent => new LayerParameterList(parameters.Select(lp => lp.Tangent));

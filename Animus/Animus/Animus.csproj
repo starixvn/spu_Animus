@@ -71,6 +71,12 @@
     <Compile Include="ANN\Optimizer\DataMining\Helper.cs" />
     <Compile Include="ANN\Optimizer\DataMining\Rmsprop.cs" />
     <Compile Include="ANN\Optimizer\DataMining\Sgd.cs" />
+    <Compile Include="ANN\Optimizer\Reinforcement\A3C.cs" />
+    <Compile Include="ANN\Optimizer\Reinforcement\A3CModel.cs" />
+    <Compile Include="ANN\Optimizer\Reinforcement\IAsyncOptimizer.cs" />
+    <Compile Include="ANN\Optimizer\Reinforcement\IEnvironment.cs" />
+    <Compile Include="ANN\Optimizer\Reinforcement\IPolicyOptimizer.cs" />
+    <Compile Include="ANN\Optimizer\Reinforcement\Record.cs" />
     <Compile Include="ANN\Types\AutoEncoder.cs" />
     <Compile Include="ANN\Types\EncoderFlow.cs" />
     <Compile Include="ANN\Types\FeedForwardNet.cs" />
