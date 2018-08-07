@@ -57,10 +57,7 @@
     <Compile Include="TensorTest\ScalarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TensorTest\VectorTest.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="DifferentialTest.cs" />
->>>>>>> testing
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -86,10 +83,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-<<<<<<< HEAD
-=======
   <ItemGroup />
->>>>>>> testing
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
