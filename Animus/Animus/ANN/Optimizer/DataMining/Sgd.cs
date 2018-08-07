@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Animus.ANN.Optimizer.DataMining
 {
-    //TODO: test
     public abstract class Sgd : IOptimizer
     {
         protected LayerParameterList CurrentParameters { get; private set; }

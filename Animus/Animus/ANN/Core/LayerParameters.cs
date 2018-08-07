@@ -49,7 +49,7 @@ namespace Animus.ANN.Core
 
         public static LayerParameters operator +(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights + w2.Weights, w1.Bias + w1.Bias);
 
-        public static LayerParameters operator -(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights - w2.Weights, w1.Bias - w1.Bias);
+        public static LayerParameters operator -(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights - w2.Weights, w1.Bias - w2.Bias);
 
         public static LayerParameters operator *(LayerParameters w1, LayerParameters w2) => new LayerParameters(w1.Weights.Hadamard(w2.Weights), w1.Bias.Hadamard(w2.Bias));
 

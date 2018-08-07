@@ -44,11 +44,12 @@ namespace Animus.ANN.Optimizer.DataMining
                 //update gradient strength
                 AccumulatedStrength = AccumulatedStrength.Select((p, i) => Alpha * p + (1 - Alpha) * gradient[i].Pow(2)).ToArray();
 
-                //update stepping direction
-                var direction = AccumulatedStrength.Select((p, i) => -learningRate * gradient[i] / (1e-12 + LayerParameters.Sqrt(p))).ToArray();
-
                 //update learnt parameters
-                CurrentParameters = new LayerParameterList(CurrentParameters.Select((p, i) => p + direction[i]));
+                CurrentParameters =
+                    new LayerParameterList(
+                            AccumulatedStrength
+                            .Select((p, i) => -learningRate * gradient[i] / (1e-7 + LayerParameters.Sqrt(p))) // get the direction
+                            .Select((d, i) => CurrentParameters[i] + d)); // update the parameters
 
                 //replicate so that each callback is independent
                 var callbackEpoch = ++epoch;

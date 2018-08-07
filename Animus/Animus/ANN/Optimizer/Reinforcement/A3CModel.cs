@@ -34,12 +34,14 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
             var normalizedPolicy = TensorFunction.Softmax(Vector.OfSequence(policy.ToArray()));
 
+            var idx = 0;
+
             foreach (var action in actions)
             {
                 yield return new ActionScore<TAction>
                 {
                     Action = action,
-                    Score = (double)normalizedPolicy[a3C.ActionIndex(action) + 1]
+                    Score = (double)normalizedPolicy[idx++]
                 };
             }
         }

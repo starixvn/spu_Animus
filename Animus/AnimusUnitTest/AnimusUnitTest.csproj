@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ANNTest\DataminingTest.cs" />
+    <Compile Include="ANNTest\ReinforcementTest.cs" />
     <Compile Include="TensorTest\MatrixTest.cs" />
     <Compile Include="TensorTest\ScalarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +63,7 @@
 >>>>>>> testing
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

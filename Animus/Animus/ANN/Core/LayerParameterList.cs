@@ -10,7 +10,14 @@ namespace Animus.ANN.Core
 
         public LayerParameterList(IEnumerable<LayerParameters> parameters)
         {
-            Raw = parameters.ToArray();
+            if (parameters is LayerParameters[])
+            {
+                Raw = (LayerParameters[])parameters;
+            }
+            else
+            {
+                Raw = parameters.ToArray();
+            }
 
             offset = 0;
 

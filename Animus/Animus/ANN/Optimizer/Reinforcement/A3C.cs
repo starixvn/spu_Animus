@@ -52,17 +52,23 @@ namespace Animus.ANN.Optimizer.Reinforcement
             calculator = agent.BuildFlow();
             optimizer = Optimizer;
 
-            //create thread index
-            var threads = Enumerable.Range(0, Threads).ToList();
+            var q = new Queue<Thread>(Threads);
 
-            // no limit on parallelism
-            var option = new ParallelOptions
+            for (int i = 0; i < Threads; i++)
             {
-                MaxDegreeOfParallelism = -1,
-            };
+                var local = i;
+                var thread = new Thread(a => ExecuteThread((int)a));
+                thread.Start(i);
+                q.Enqueue(thread);
+            }
 
-            //run each task in parallel and wait
-            await Task.Factory.StartNew(() => Parallel.For(0, Threads, option, ExecuteThread));
+            await Task.Factory.StartNew(() =>
+            {
+                foreach (var item in q)
+                {
+                    item.Join();
+                }
+            });
 
             return new A3CModel<TState, TAction>(parameters, calculator, environment, this);
         }
@@ -81,7 +87,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
                 var threadParameter = parameters;
 
                 //play the game
-                var (finalState, records) = Play(threadParameter, game, turn, state);
+                var (finalState, records, finalTurn) = Play(threadParameter, game, turn, state);
 
                 //calculate reward
                 var newReward = ProcessData(threadParameter, finalState, records);
@@ -91,16 +97,12 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
                 state = finalState;
                 game++;
-                turn = turn + records.Count - 1;
+                turn = finalTurn;
                 reward += newReward;
 
                 if (environment.IsTerminalState(finalState))
                 {
-                    // replicate so that later loop won't modify it
-                    var replicateGame = game - 1;
-                    var replicateReward = reward;
-
-                    new Thread(() => ThreadCallback(thread, replicateGame, replicateReward)).Start();
+                    ThreadCallback(thread, game - 1, reward);
 
                     state = environment.CreateInitialState();
 
@@ -122,24 +124,32 @@ namespace Animus.ANN.Optimizer.Reinforcement
             return (valuePolicy[0], normalizedPolicy);
         }
 
-        private (TState finalState, Stack<Record<TState, TAction>> records) Play(LayerParameterList threadParameters, int game, int turn, TState state)
+        private (TState finalState, Stack<Record<TState, TAction>> records, int finalTurn) Play(LayerParameterList threadParameters, int game, int turn, TState state)
         {
             var result = new Stack<Record<TState, TAction>>();
 
             var currentState = state;
 
-            while (!environment.IsTerminalState(state) && !StopAndUpdate(game, turn))
-            {
-                var (value, policy) = Calculate(parameters, currentState);
+            var finalTurn = turn;
 
+            while (!environment.IsTerminalState(currentState) && !StopAndUpdate(game, turn))
+            {
+                // get action distribution in policy
+                var (value, policy) = Calculate(threadParameters, currentState);
+
+                // create a category distribution based on policy
                 var rng = Rng.Category((double[])policy);
 
+                // get a random action index
                 var index = rng.Sample();
 
-                var action = environment.GetActions(currentState).ElementAt(rng.Sample());
+                // pick an action based on the index
+                var action = environment.GetActions(currentState).ElementAt(index);
 
+                // play the game to get next state
                 var nextState = environment.NextState(currentState, action);
 
+                // save data in stack
                 result.Push(new Record<TState, TAction>
                 {
                     Action = action,
@@ -149,15 +159,19 @@ namespace Animus.ANN.Optimizer.Reinforcement
                 });
 
                 currentState = nextState;
+
+                finalTurn++;
             }
 
-            return (currentState, result);
+            return (currentState, result, finalTurn);
         }
 
         private double ProcessData(LayerParameterList threadParameters, TState finalState, Stack<Record<TState, TAction>> records)
         {
+            // finalState value
             var value = .0;
 
+            // check if finalState is not game over
             if (!environment.IsTerminalState(finalState))
             {
                 var g = Calculate(threadParameters, finalState);
@@ -165,12 +179,15 @@ namespace Animus.ANN.Optimizer.Reinforcement
                 value = (double)g.value;
             }
 
+            // total reward after playing the game
             var totalReward = .0;
 
             foreach (var record in records)
             {
+                // get reward for this record
                 var reward = Reward(record.CurrentState, record.Action, record.NextState);
 
+                // calculate new value according to q-learning wiki
                 value = reward + Discount * value;
 
                 record.StateValue = value;
@@ -205,7 +222,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
             var entropy = -policy * TensorFunction.Log(policy);
 
-            return policyLoss + valueLoss - Beta * entropy;
+            return policyLoss + 0.5 * valueLoss - Beta * entropy;
         }
     }
 }

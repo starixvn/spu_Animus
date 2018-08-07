@@ -154,4 +154,13 @@ namespace AnimusUnitTest.ANNTest
 
         protected override void Callback(int epoch, double loss) { }
     }
+
+    public class Optimizer2 : Rmsprop
+    {
+        protected override double Alpha => 0.9;
+
+        protected override double LearningRate(int epoch) => 0.01;
+
+        protected override bool StopTraining(int epoch, double loss) => epoch == 1000;
+    }
 }

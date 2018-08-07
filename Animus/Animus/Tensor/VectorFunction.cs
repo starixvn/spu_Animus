@@ -35,5 +35,7 @@ namespace Animus.Tensor
         public static Vector Sigmoid(Vector v) => new Vector(DV.Sigmoid(v.vector));
 
         public static Vector Softmax(Vector v) => new Vector(DV.SoftMax(v.vector));
+
+        public static Scalar L2Norm2(Vector v) => new Scalar(DV.L2NormSq(v.vector));
     }
 }
