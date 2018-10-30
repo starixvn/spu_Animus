@@ -1,7 +1,7 @@
 ﻿using Animus.ANN.Core;
 using System;
 
-namespace Animus.ANN.Optimizer.DataMining
+namespace Animus.ANN.Optimizer
 {
     public class GenericModel<TInput, TOutput> : IModel<TInput, TOutput>
     {

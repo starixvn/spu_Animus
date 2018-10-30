@@ -71,7 +71,7 @@
     <Compile Include="ANN\MappedInputModel.cs" />
     <Compile Include="ANN\MappedOutputModel.cs" />
     <Compile Include="ANN\ModelExtension.cs" />
-    <Compile Include="ANN\Optimizer\DataMining\GenericModel.cs" />
+    <Compile Include="ANN\GenericModel.cs" />
     <Compile Include="ANN\Optimizer\DataMining\Helper.cs" />
     <Compile Include="ANN\Optimizer\DataMining\OptimizerExtension.cs" />
     <Compile Include="ANN\Optimizer\DataMining\Rmsprop.cs" />

@@ -12,7 +12,7 @@ namespace Animus.ANN.Core
             var idx = 0;
             var weights = new double[currLayer, prevLayer];
 
-            foreach (var item in data.Take(currLayer * prevLayer).ToList())
+            foreach (var item in data.Take(currLayer * prevLayer))
             {
                 weights[idx / prevLayer, idx % prevLayer] = item;
 
