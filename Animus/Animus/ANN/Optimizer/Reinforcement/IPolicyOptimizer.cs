@@ -15,7 +15,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
         void ThreadCallback(int thread, int game, double point);
 
-        Task<IModel<TState, IEnumerable<ActionScore<TAction>>>> Train(IEnvironment<TState, TAction> environment, TAgent agent);
+        IModel<TState, IEnumerable<ActionScore<TAction>>> Train(IEnvironment<TState, TAction> environment, TAgent agent);
 
         bool Terminate(int thread, int game);
     }

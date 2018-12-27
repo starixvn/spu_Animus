@@ -20,7 +20,7 @@ namespace AnimusUnitTest.ANNTest
         public const int traps = 2;
 
         [TestMethod]
-        public async Task TestMaze()
+        public void TestMaze()
         {
             var ff = new FeedForwardNet<State>(
                     inputLayer: LayerFactory.MakeInputLayer<State>(s => s.Vector, size * size),
@@ -31,7 +31,7 @@ namespace AnimusUnitTest.ANNTest
 
             var controller = new GameController();
 
-            var model = await controller.Train(env, ff);
+            var model = controller.Train(env, ff);
 
             Solve(env, model);
         }

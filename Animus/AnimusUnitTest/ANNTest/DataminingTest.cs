@@ -71,13 +71,99 @@ namespace AnimusUnitTest.ANNTest
 
             var p = await optimizer.TrainAsync(repos, flow.Train, new LayerParameterList(ff.Initialize()));
 
+            var model = await optimizer.Train(ff, repos);
+
             foreach (var iris in data.GroupBy(ir => ir.Type).SelectMany(g => Rng.SelectNoRepeat(g, 1)))
             {
-                var output = flow.Model(p, iris);
+                var output = model.Compute(iris);
 
                 // check the output
                 Console.WriteLine($"{iris.Type}: {output}");
             }
+        }
+
+
+        public async Task Unsupervised()
+        {
+            var encoder = new FeedForwardNet<double[]>(
+                    inputLayer: LayerFactory.MakeInputLayer((double[] arr) => new Vector(arr), 20),
+                    hiddenLayers: new[] { 64, 32, 16 }.Select(LayerFactory.MakeTanhLayer),
+                    outputLayer: LayerFactory.MakeTanhLayer(4));
+
+            var decoder = new FeedForwardNet<Vector>(
+                    inputLayer: LayerFactory.MakeInputLayer((Vector v)=> v, 4),
+                    hiddenLayers: new[] { 16, 32, 64 }.Select(LayerFactory.MakeTanhLayer),
+                    outputLayer: LayerFactory.MakeSoftmaxLayer(20));
+
+            var encodeFlow = encoder.BuildFlow();
+            var decoderFlow = decoder.BuildFlow();
+
+            Func<LayerParameterList, double[], Vector> fullFlow = (w, data) =>
+            {
+                var hash = encodeFlow.Train(w, data);
+
+                var decodeData = decoderFlow.Train(new LayerParameterList(w, 4, null), hash);
+
+                return decodeData;
+            };
+
+            var encodeParam = encoder.Initialize();
+            var decoderParam = decoder.Initialize();
+
+            var p = new LayerParameterList(encodeParam.Concat(decoderParam));
+
+            IDataRepository<double[], Vector> repos = null;
+
+            var optimizer = new Optimizer();
+
+            var finalParam = await optimizer.TrainAsync(repos, fullFlow, p);
+
+
+
+
+            IEnumerable<double[]> data = null;
+
+            var hashes = data.Select(d => encodeFlow.Model(finalParam, d));
+
+            // kmean hashes
+            IEnumerable<Vector> clusterHash = null;
+
+            var originalData = clusterHash.Select(c =>(double[]) decoderFlow.Model(new LayerParameterList(finalParam, 4, null), c));
+
+            // pick 30 - label
+            // p = .....
+            IDictionary<int, double> prob = null;
+
+
+            // real
+            double[] session = null;
+
+            // hash data
+            var hash1 = encodeFlow.Model(finalParam, session);
+
+            var distance = double.PositiveInfinity;
+            var center = 0;
+
+            foreach (var item in clusterHash)
+            {
+                var d = (double) ((hash1 - item) * (hash1 - item));
+                var v = (hash1 - item).Pow(2);
+                if(d < distance)
+                {
+                    distance = d;
+                    break;
+                }
+
+                center++;
+            }
+
+            var realProb = prob[center];
+
+            // anomaly
+            var reconstruction = fullFlow(finalParam, session);
+
+
+            var error = (double)repos.Loss(session, reconstruction);
         }
 
         public IEnumerable<Iris> DownloadJson()
@@ -142,6 +228,16 @@ namespace AnimusUnitTest.ANNTest
         }
 
         public IEnumerable<Iris> Sample() => Rng.SelectNoRepeat(data, 30);
+    }
+
+    public class FPSRepos : IDataRepository<double[], Vector>
+    {
+        public Scalar Loss(double[] sample, Vector output)
+        {
+            return -new Vector(sample) * TensorFunction.Log(output);
+        }
+
+        public IEnumerable<double[]> Sample() => null;//db;
     }
 
     public class Optimizer : Sgd

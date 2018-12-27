@@ -44,7 +44,7 @@ namespace Animus.ANN.Optimizer.Reinforcement
 
         private IAsyncOptimizer optimizer;
 
-        public async Task<IModel<TState, IEnumerable<ActionScore<TAction>>>> Train(IEnvironment<TState, TAction> environment, INN<TState, Vector> agent)
+        public IModel<TState, IEnumerable<ActionScore<TAction>>> Train(IEnvironment<TState, TAction> environment, INN<TState, Vector> agent)
         {
             //intialize thread share objects
             parameters = new LayerParameterList(agent.Initialize());
@@ -62,13 +62,10 @@ namespace Animus.ANN.Optimizer.Reinforcement
                 q.Enqueue(thread);
             }
 
-            await Task.Factory.StartNew(() =>
+            foreach (var item in q)
             {
-                foreach (var item in q)
-                {
-                    item.Join();
-                }
-            });
+                item.Join();
+            }
 
             return new A3CModel<TState, TAction>(parameters, calculator, environment, this);
         }
