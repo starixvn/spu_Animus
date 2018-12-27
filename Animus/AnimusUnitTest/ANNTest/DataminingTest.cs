@@ -118,52 +118,83 @@ namespace AnimusUnitTest.ANNTest
 
             var finalParam = await optimizer.TrainAsync(repos, fullFlow, p);
 
+            #region Find clusters
 
+            IEnumerable<double[]> data = null; // {{ a1, a2,.... an},{ a1, a2,.... am},{ a1, a2,.... at}....} //input TOTAL data[100]  :100 sessions
 
-
-            IEnumerable<double[]> data = null;
-
-            var hashes = data.Select(d => encodeFlow.Model(finalParam, d));
+            var hashes = data.Select(d => encodeFlow.Model(finalParam, d)); // list of hashes
 
             // kmean hashes
-            IEnumerable<Vector> clusterHash = null;
+            // for ex: we get out 3 central points (clusters) --> clusters[3]
+            IEnumerable<Vector> clusters = fit(hashes); //  https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html //install them : anaconda x64 + pycharm
 
-            var originalData = clusterHash.Select(c =>(double[]) decoderFlow.Model(new LayerParameterList(finalParam, 4, null), c));
+            var originalData = clusters.Select(c =>(double[]) decoderFlow.Model(new LayerParameterList(finalParam, 4, null), c)); // list of histograms
 
-            // pick 30 - label
+            // pick 30 - label of each cluster
             // p = .....
-            IDictionary<int, double> prob = null;
+            //IEnumerable<double[]> testdata;
+            //int i = 0;
+            //foreach(var c in clusters)
+            //{
+            //    testdata[i] = hashes(c);
+            //    i++;
+            //}
 
+            IEnumerable<int>  predictedClusters = predict(hashes); // [0,1,2,0,2,1,1......] : 100 items (belongs to 3 central points, clusters)
+
+            // --> pick 30 randomly of each clusters (3 clusters, central points) 
+            // 30 of clusters[0] , etc... then give a decision humanly it's a robot case , if yes mark 1
+            // then calculate p (Robot lower bounding), p^ = (count if 1 )/ n = 30 , ex: p = 0.87
+
+            #endregion
+
+            #region check new session 
+
+            //IDictionary<int, double> prob = null;
 
             // real
-            double[] session = null;
+            double[] session = null; // { a1, a2,.... an}  //TestData for checking robot or.. 
 
             // hash data
-            var hash1 = encodeFlow.Model(finalParam, session);
+            var hash1 = encodeFlow.Model(finalParam, session); // encode
 
-            var distance = double.PositiveInfinity;
-            var center = 0;
+            IEnumerable<int> foundCluster = predict(new Vector[] { hash1 });
 
-            foreach (var item in clusterHash)
-            {
-                var d = (double) ((hash1 - item) * (hash1 - item));
-                var v = (hash1 - item).Pow(2);
-                if(d < distance)
-                {
-                    distance = d;
-                    break;
-                }
+            //var distance = double.PositiveInfinity;
+            //var center = 0;
 
-                center++;
-            }
+            //foreach (var item in clusters)
+            //{
+            //    var d = (double) ((hash1 - item) * (hash1 - item));
+            //    var v = (hash1 - item).Pow(2); //ví du
+            //    if(d < distance)
+            //    {
+            //        distance = d;
+            //        break;
+            //    }
 
-            var realProb = prob[center];
+            //    center++;
+            //}
+
+            //var realProb = prob[center];
+
+            #endregion
 
             // anomaly
             var reconstruction = fullFlow(finalParam, session);
 
-
             var error = (double)repos.Loss(session, reconstruction);
+
+            var std = 0.23;// +- 0.23 , độ lệch chuẩn
+
+            var th = 3 * std;// 0.7
+
+            //var anomalyScore =
+            //   ps
+            //       .Select((p, i) => -p * Real.Log(qs[i]) - (1 - p) * Real.Log(1 - qs[i]))
+            //       .Count(r => (double)r >= 0.7);
+
+            // the empirical rule https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
         }
 
         public IEnumerable<Iris> DownloadJson()
